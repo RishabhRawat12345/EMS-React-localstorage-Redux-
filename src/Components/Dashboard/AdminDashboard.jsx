@@ -18,17 +18,17 @@ const AdminDashboard = () => {
       [name]: value
     }));
   };
-
+  const[history,sethistory]=useState(()=>{
+    return JSON.parse(localStorage.getItem('task_History'))||[];
+  })
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("The admin task data", formData);
 
-    const task_History=JSON.parse(localStorage.getItem('task_History'))||[];
-
-    task_History.push(formData);
-    localStorage.setItem("task_History",JSON.stringify(task_History));
+    const updateHistory=[...history,formData];
+    localStorage.setItem("task_History",JSON.stringify(updateHistory));
     localStorage.getItem("Current_task",JSON.stringify(formData));
-
+    sethistory(updateHistory);
     console.log("the task as follows",task_History);
   };
   return (
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
         </button>
       </form>
       <div className="w-full max-w-xl mt-8">
-        <TaskList tasks={task_History} />
+        <TaskList tasks={history} />
       </div>
     </div>
   );
